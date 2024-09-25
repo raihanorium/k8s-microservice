@@ -1,0 +1,4 @@
+rootProject.name = 'k8s-microservice'
+include 'user-manager',
+        'user-manager-api',
+        'k8s'
