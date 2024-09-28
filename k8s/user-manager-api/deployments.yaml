@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: k8s-microservices
+  name: user-manager-api
+  labels:
+    app: user-manager-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-manager-api
+  template:
+    metadata:
+      labels:
+        app: user-manager-api
+    spec:
+      containers:
+        - name: user-manager-api
+          image: raihanorium/user-manager-api:latest
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: k8s-microservices
+  name: user-manager-db
+  labels:
+    app: user-manager-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-manager-db
+  template:
+    metadata:
+      labels:
+        app: user-manager-db
+    spec:
+      containers:
+        - name: user-manager-db
+          image: mysql:8.4.2
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: user_manager
+          ports:
+            - containerPort: 3306

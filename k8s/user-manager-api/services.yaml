@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: k8s-microservices
+  name: user-manager-api
+spec:
+  type: NodePort
+  selector:
+    label: user-manager-api
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30007
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: k8s-microservices
+  name: user-manager-db
+spec:
+  type: ClusterIP
+  selector:
+    label: user-manager-db
+  ports:
+    - port: 3306
+      targetPort: 3306
