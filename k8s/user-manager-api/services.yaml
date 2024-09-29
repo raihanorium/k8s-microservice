@@ -4,13 +4,12 @@ metadata:
   namespace: k8s-microservices
   name: user-manager-api
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
-    label: user-manager-api
+    app: user-manager-api
   ports:
     - port: 8080
       targetPort: 8080
-      nodePort: 30007
 
 ---
 
@@ -22,7 +21,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    label: user-manager-db
+    app: user-manager-db
   ports:
     - port: 3306
       targetPort: 3306

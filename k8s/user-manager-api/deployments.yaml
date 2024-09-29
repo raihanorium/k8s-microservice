@@ -18,6 +18,18 @@ spec:
       containers:
         - name: user-manager-api
           image: raihanorium/user-manager-api:latest
+          imagePullPolicy: Always
+          env:
+          - name: MYSQL_HOST
+            value: user-manager-db
+          - name: MYSQL_PORT
+            value: "3306"
+          - name: MYSQL_DATABASE
+            value: user_manager
+          - name: MYSQL_USER
+            value: root
+          - name: MYSQL_PASSWORD
+            value: root
           ports:
             - containerPort: 8080
 
