@@ -15,23 +15,43 @@ spec:
       labels:
         app: user-manager-api
     spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox
+          command: [ 'sh', '-c', 'until nc -z user-manager-db 3306; do echo waiting for db; sleep 2; done;' ]
+
       containers:
         - name: user-manager-api
           image: raihanorium/user-manager-api:latest
           imagePullPolicy: Always
           env:
-          - name: MYSQL_HOST
-            value: user-manager-db
-          - name: MYSQL_PORT
-            value: "3306"
-          - name: MYSQL_DATABASE
-            value: user_manager
-          - name: MYSQL_USER
-            value: root
-          - name: MYSQL_PASSWORD
-            value: root
+            - name: MYSQL_HOST
+              value: user-manager-db
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DATABASE
+              value: user_manager
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: root
           ports:
             - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: user-manager-db-pvc
+  namespace: k8s-microservices
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
 
 ---
 
@@ -62,3 +82,10 @@ spec:
               value: user_manager
           ports:
             - containerPort: 3306
+          volumeMounts:
+            - name: user-manager-db-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: user-manager-db-storage
+          persistentVolumeClaim:
+            claimName: user-manager-db-pvc
