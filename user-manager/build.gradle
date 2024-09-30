@@ -1,9 +1,23 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
 plugins {
     id 'base'
     id 'com.github.node-gradle.node' version '7.0.2'
+    id 'com.bmuschko.docker-remote-api' version '9.4.0'
+}
+
+tasks.named('clean', Delete) {
+    delete file('dist')
 }
 
 tasks.register('npmBuild') {
     group = 'npm'
-    dependsOn 'npmInstall', 'npm_run_build'
+    dependsOn 'clean', 'npmInstall', 'npm_run_build'
+}
+
+tasks.register('buildDockerImage', DockerBuildImage) {
+    group = 'docker'
+    dependsOn 'npmBuild'
+    dockerFile = file('Dockerfile')
+    images.add('raihanorium/user-manager:latest')
 }
