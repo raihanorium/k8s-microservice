@@ -1,9 +1,15 @@
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 
 plugins {
     id 'base'
     id 'com.github.node-gradle.node' version '7.0.2'
     id 'com.bmuschko.docker-remote-api' version '9.4.0'
+}
+
+node {
+    download = true
+    version = project.property('node.version')
 }
 
 tasks.named('clean', Delete) {
@@ -19,5 +25,17 @@ tasks.register('buildDockerImage', DockerBuildImage) {
     group = 'docker'
     dependsOn 'npmBuild'
     dockerFile = file('Dockerfile')
-    images.add('raihanorium/user-manager:latest')
+    inputDir = file("${project.projectDir}")
+    images.add("raihanorium/user-manager:${project.version}")
+}
+
+tasks.register('dockerPushImage', DockerPushImage) {
+    group = 'docker'
+    dependsOn 'buildDockerImage'
+    images = tasks.buildDockerImage.images
+    registryCredentials {
+        url = project.getProperties().get('docker.registry').toString()
+        username = project.getProperties().get('docker.username').toString()
+        password = project.getProperties().get('docker.password').toString()
+    }
 }
