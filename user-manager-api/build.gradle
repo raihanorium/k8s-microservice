@@ -5,7 +5,6 @@ plugins {
 }
 
 group = 'com.raihanorium'
-version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
@@ -38,6 +37,13 @@ tasks.named('test') {
 }
 
 tasks.named("bootBuildImage") {
-    imageName = "raihanorium/user-manager-api"
+    imageName = "raihanorium/user-manager-api:${project.version}"
     publish = true
+    docker {
+        publishRegistry {
+            url = project.getProperties().get("docker.registry").toString()
+            username = project.getProperties().get("docker.username").toString()
+            password = project.getProperties().get("docker.password").toString()
+        }
+    }
 }
