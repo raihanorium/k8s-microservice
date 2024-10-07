@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: user-manager-api
+  labels:
+    app: user-manager-api
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: user-manager-api
+  template:
+    metadata:
+      labels:
+        app: user-manager-api
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox
+          command: [ 'sh', '-c', 'until nc -z {{ .Values.app.database.host }} {{ .Values.app.database.port }}; do echo waiting for db; sleep 2; done;' ]
+
+      containers:
+        - name: user-manager-api
+          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          imagePullPolicy: Always
+          env:
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: user-manager-api-config
+                  key: db_host
+            - name: MYSQL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: user-manager-api-config
+                  key: db_port
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: user-manager-api-config
+                  key: db_name
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: user-manager-api-config
+                  key: db_user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: user-manager-api-config
+                  key: db_password
+          ports:
+            - containerPort: {{ .Values.app.containerPort }}

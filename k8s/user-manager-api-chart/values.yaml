@@ -1,0 +1,21 @@
+namespace: k8s-microservices
+app:
+  replicas: 1
+  containerPort: 8080
+  database:
+    host: user-manager-db
+    port: 3306
+    name: user_manager
+    user: root
+    password: root
+  image:
+    repository: raihanorium/user-manager-api
+    tag: latest
+
+mysql:
+  image:
+    repository: mysql
+    tag: 8.4.2
+  auth:
+    rootPassword: root
+    database: user_manager

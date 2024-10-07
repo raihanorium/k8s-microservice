@@ -1,0 +1,11 @@
+apiVersion: v2
+name: user-manager-api-chart
+description: User Manager API Helm Chart
+type: application
+version: 0.1.0
+appVersion: "0.0.0-local"
+
+dependencies:
+  - name: mysql
+    version: 8.4.2
+    repository: https://charts.bitnami.com/bitnami
