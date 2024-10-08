@@ -39,3 +39,8 @@ tasks.register('dockerPushImage', DockerPushImage) {
         password = project.getProperties().get('docker.password').toString()
     }
 }
+
+tasks.register('buildAndPublish') {
+    group = 'app'
+    dependsOn 'dockerPushImage'
+}

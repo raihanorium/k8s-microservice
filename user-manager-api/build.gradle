@@ -49,3 +49,8 @@ tasks.named("bootBuildImage") {
         }
     }
 }
+
+tasks.register('buildAndPublish') {
+    group = 'app'
+    dependsOn 'bootBuildImage'
+}

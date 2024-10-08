@@ -29,3 +29,8 @@ helm {
         }
     }
 }
+
+tasks.register('buildAndPublish') {
+    group = 'app'
+    dependsOn 'helmInstall'
+}
