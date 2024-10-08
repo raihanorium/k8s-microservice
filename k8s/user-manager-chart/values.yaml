@@ -1,0 +1,10 @@
+namespace: k8s-microservices
+name: user-manager
+app:
+  replicas: 1
+  containerPort: 3000
+  image:
+      repository: raihanorium/user-manager
+      tag: 0.0.0-local
+  api:
+    userManager: http://user-manager-api:8080

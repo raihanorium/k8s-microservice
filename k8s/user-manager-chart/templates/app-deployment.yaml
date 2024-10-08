@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: {{ .Values.name }}
+  labels:
+    app: user-manager
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: user-manager
+  template:
+    metadata:
+      labels:
+        app: user-manager
+    spec:
+      containers:
+        - name: {{ .Values.name }}
+          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          imagePullPolicy: Always
+          env:
+            - name: VITE_USER_MANAGER_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: -config
+                  key: user_manager_api_url
+          ports:
+            - containerPort: {{ .Values.app.containerPort }}
