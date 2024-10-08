@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: user-manager-api-config
+  name: {{ .Values.name }}-config
 data:
   db_host: {{quote .Values.app.database.host }}
   db_port: {{quote  .Values.app.database.port }}

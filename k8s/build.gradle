@@ -1,0 +1,31 @@
+plugins {
+    id 'org.unbroken-dome.helm' version '2.0.0'
+    id 'org.unbroken-dome.helm-releases' version '2.0.0'
+}
+
+helm {
+    namespace = 'k8s-microservices'
+    downloadClient {
+        enabled = true
+        version = '3.12.3'
+    }
+    repositories {
+        bitnami {
+            url 'https://charts.bitnami.com/bitnami'
+        }
+    }
+    charts {
+        "user-manager-api" {
+            chartName = 'user-manager-api'
+            chartVersion = project.version
+            sourceDir = project.file("$projectDir/user-manager-api-chart")
+        }
+    }
+
+    releases {
+        "user-manager-api" {
+            createNamespace = true
+            from charts."user-manager-api"
+        }
+    }
+}
