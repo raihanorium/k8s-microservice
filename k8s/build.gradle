@@ -20,12 +20,21 @@ helm {
             chartVersion = project.version
             sourceDir = project.file("$projectDir/user-manager-api-chart")
         }
+        "user-manager" {
+            chartName = 'user-manager'
+            chartVersion = project.version
+            sourceDir = project.file("$projectDir/user-manager-chart")
+        }
     }
 
     releases {
         "user-manager-api" {
             createNamespace = true
             from charts."user-manager-api"
+        }
+        "user-manager" {
+            createNamespace = true
+            from charts."user-manager"
         }
     }
 }

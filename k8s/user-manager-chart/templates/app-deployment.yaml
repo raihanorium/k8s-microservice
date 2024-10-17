@@ -23,7 +23,7 @@ spec:
             - name: VITE_USER_MANAGER_API_URL
               valueFrom:
                 configMapKeyRef:
-                  name: -config
+                  name: {{ .Values.name }}-config
                   key: user_manager_api_url
           ports:
             - containerPort: {{ .Values.app.containerPort }}

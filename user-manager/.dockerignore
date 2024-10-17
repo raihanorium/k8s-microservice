@@ -1,0 +1,4 @@
+dist
+.env*
+.gradle
+node_modules
