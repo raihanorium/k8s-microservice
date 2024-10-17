@@ -16,3 +16,4 @@ spring:
 springdoc:
   swagger-ui:
     path: /
+  packages-to-scan: com.raihanorium.usermanagerapi.controller

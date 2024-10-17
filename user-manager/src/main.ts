@@ -1,14 +1,14 @@
 import './style.css'
 import {fetchData} from './api';
 
-fetchData(import.meta.env.VITE_USER_MANAGER_API_URL)
+fetchData(import.meta.env.VITE_USER_MANAGER_API_URL + '/api/v1/user')
     .then(data => {
       document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <div>
         <h1>User Manager</h1>
         <hr>
         <h2>Fetched Data:</h2>
-        <div>${data}</div>
+        <div>${data.data}</div>
       </div>
     `;
     })
