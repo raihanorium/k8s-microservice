@@ -4,7 +4,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   name: {{ .Values.name }}
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: user-manager
   ports:
