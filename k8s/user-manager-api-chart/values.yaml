@@ -21,3 +21,11 @@ mysql:
   auth:
     rootPassword: root
     database: user_manager
+  primary:
+    persistence:
+      enabled: true
+      existingClaim: ""
+      storageClass: "standard"
+      accessModes:
+        - ReadWriteOnce
+      size: 2Gi
